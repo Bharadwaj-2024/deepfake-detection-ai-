@@ -71,6 +71,23 @@ Please note that currently we have only pushed the image of 20 Frames model, If 
 
 **Note :** The model name must be in specified format only i.e *model_84_acc_10_frames_final_data.pt*. Make sure that no of frames must be mentioned after certain 3 underscores `_` , in the above example the model is for 10 frames.
 
+### Optional: Sync models automatically from Google Drive
+
+1. Populate `model_manifest.json` with one entry per checkpoint. Each entry needs:
+   - `file_id`: the Google Drive file id (from the shareable link).
+   - `filename`: the desired local filename (must follow the naming rule above).
+   - Optional `sha256`: checksum to verify integrity after download.
+2. Install dependencies (`pip install -r requirements.txt`) to get `gdown`.
+3. Run the sync utility from the Django Application directory:
+   ```
+   python sync_models.py --manifest model_manifest.json --models-dir models
+   ```
+   Flags:
+   - `--dry-run` logs planned actions without downloading.
+   - `--force` overwrites existing files.
+
+The script downloads each Drive file into `models/`, ensuring the inference view can automatically pick the right checkpoint based on filename.
+
 
 ### Step 6: Run project
 

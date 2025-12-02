@@ -101,8 +101,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'uploaded_images'),
     os.path.join(PROJECT_DIR, 'static'),
-    os.path.join(PROJECT_DIR, 'models'),
 ]
+
 
 CONTENT_TYPES = ['video']
 MAX_UPLOAD_SIZE = "104857600"
