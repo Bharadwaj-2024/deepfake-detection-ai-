@@ -40,4 +40,4 @@ RUN python manage.py collectstatic --noinput 2>/dev/null || true
 EXPOSE 8000
 
 # Run gunicorn binding to platform-provided $PORT
-CMD ["gunicorn", "--bind", "0.0.0.0:${PORT}", "--workers", "2", "--worker-class", "sync", "--timeout", "120", "--access-logfile", "-", "--error-logfile", "-", "project_settings.wsgi:application"]
+CMD ["/bin/sh", "-c", "gunicorn --bind 0.0.0.0:$PORT --workers 2 --worker-class sync --timeout 120 --access-logfile - --error-logfile - project_settings.wsgi:application"]
