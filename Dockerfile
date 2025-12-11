@@ -10,8 +10,13 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # Set work directory
 WORKDIR /app
 
-# Install minimal system dependencies (skip heavy dependencies)
+# Install system dependencies required by OpenCV
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy entire project
@@ -22,8 +27,8 @@ RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r "Django Application/requirements.txt" && \
     pip install --no-cache-dir gunicorn whitenoise
 
-# Set working directory to Django app
-WORKDIR /app/Django\ Application
+# Set working directory to Django app (path contains a space)
+WORKDIR "/app/Django Application"
 
 # Create necessary directories
 RUN mkdir -p uploaded_videos uploaded_images logs static staticfiles
@@ -34,5 +39,5 @@ RUN python manage.py collectstatic --noinput 2>/dev/null || true
 # Expose port
 EXPOSE 8000
 
-# Run gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2", "--worker-class", "sync", "--timeout", "120", "--access-logfile", "-", "--error-logfile", "-", "project_settings.wsgi:application"]
+# Run gunicorn binding to platform-provided $PORT
+CMD ["gunicorn", "--bind", "0.0.0.0:${PORT}", "--workers", "2", "--worker-class", "sync", "--timeout", "120", "--access-logfile", "-", "--error-logfile", "-", "project_settings.wsgi:application"]
