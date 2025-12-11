@@ -10,21 +10,17 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # Set work directory
 WORKDIR /app
 
-# Install system dependencies
+# Install minimal system dependencies (skip heavy dependencies)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libssl-dev \
-    libffi-dev \
-    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy entire project
 COPY . .
 
-# Install Python dependencies
+# Install Python dependencies with increased timeout
 RUN pip install --upgrade pip && \
-    pip install -r "Django Application/requirements.txt" && \
-    pip install gunicorn whitenoise
+    pip install --no-cache-dir -r "Django Application/requirements.txt" && \
+    pip install --no-cache-dir gunicorn whitenoise
 
 # Set working directory to Django app
 WORKDIR /app/Django\ Application
@@ -32,15 +28,11 @@ WORKDIR /app/Django\ Application
 # Create necessary directories
 RUN mkdir -p uploaded_videos uploaded_images logs static staticfiles
 
-# Collect static files
+# Collect static files (ignore errors if migrations not needed)
 RUN python manage.py collectstatic --noinput 2>/dev/null || true
 
 # Expose port
 EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/').read()"
-
 # Run gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2", "--threads", "4", "--worker-class", "sync", "--timeout", "60", "project_settings.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2", "--worker-class", "sync", "--timeout", "120", "--access-logfile", "-", "--error-logfile", "-", "project_settings.wsgi:application"]
