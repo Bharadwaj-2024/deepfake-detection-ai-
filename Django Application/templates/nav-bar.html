@@ -1,21 +1,54 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
-    <!-- <a class="navbar-brand" href="#">Navbar</a> -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="navbar navbar-expand-lg navbar-light" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
+    <div class="container-fluid px-4">
+      <!-- Brand -->
+      <a class="navbar-brand fw-bold text-white" href="{% url 'ml_app:home' %}" style="font-size: 1.5em;">
+        <i class="fas fa-shield-alt me-2"></i>DeepFake Detector
+      </a>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{%url 'ml_app:home'%}">Home</a>
-            </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="{%url 'ml_app:about'%}">About</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">GitHub</a>
-            </li> -->
-        </ul>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="border-color: rgba(255,255,255,0.3);">
+          <span class="navbar-toggler-icon" style="background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e\");"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-lg-center">
+              <li class="nav-item">
+                  <a class="nav-link text-white fw-bold" href="{% url 'ml_app:home' %}" style="transition: all 0.3s ease; padding-right: 1.5rem;">
+                      <i class="fas fa-home me-2"></i>Home
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link text-white fw-bold" href="{% url 'ml_app:stats_page' %}" style="transition: all 0.3s ease; padding-right: 1.5rem;">
+                      <i class="fas fa-chart-bar me-2"></i>Stats
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link text-white fw-bold" href="{% url 'ml_app:about' %}" style="transition: all 0.3s ease; padding-right: 1.5rem;">
+                      <i class="fas fa-info-circle me-2"></i>About
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link text-white fw-bold" href="https://github.com" target="_blank" rel="noopener noreferrer" style="transition: all 0.3s ease;">
+                      <i class="fab fa-github me-2"></i>GitHub
+                  </a>
+              </li>
+          </ul>
+      </div>
     </div>
 </nav>
+
+<style>
+  .navbar-nav .nav-link:hover {
+    color: rgba(255, 255, 255, 0.9) !important;
+    transform: translateY(-2px);
+  }
+  .navbar-brand:hover {
+    transform: scale(1.05);
+  }
+  @media (max-width: 991px) {
+    .navbar-nav .nav-link {
+      padding-top: 0.5rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+  }
+</style>
